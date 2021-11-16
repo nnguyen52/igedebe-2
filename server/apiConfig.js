@@ -1,7 +1,6 @@
 const axios = require('axios');
 const apiConfig = async (endPoint, data) => {
   try {
-    // return res.data
     const res = await axios({
       method: 'post',
       url: `${process.env.GAME_URL}${endPoint}/`,

@@ -93,8 +93,10 @@ const gamesCtrl = {
           req.params.offset ? req.params.offset : 0
         };`
       );
+      if (!response.data) return res.json([]);
       return res.json(response.data.splice(0, 10));
     } catch (err) {
+      console.log('JUST_GAME_ERR', err);
       return res.status(500).json({ err: err.message });
     }
   },
@@ -108,8 +110,10 @@ const gamesCtrl = {
           req.params.offset ? req.params.offset : 0
         };`
       );
+      if (!response.data) return res.json([]);
       return res.json(response.data.splice(0, 10));
     } catch (err) {
+      console.log('COMING_SOON_ERR', err);
       return res.status(500).json({ err: err.message });
     }
   },
@@ -121,8 +125,11 @@ const gamesCtrl = {
           req.params.offset ? req.params.offset : 0
         };`
       );
+      if (!response.data) return res.json([]);
+
       return res.json(response.data.splice(0, 10));
     } catch (err) {
+      console.log('MOST_ANTI_ERR', err);
       return res.status(500).json({ err: err.message });
     }
   },
