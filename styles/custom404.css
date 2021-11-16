@@ -1,0 +1,11 @@
+.custom404 button {
+  transition: 0.3s ease-in-out;
+  background: black;
+  border: 3px solid greenyellow;
+}
+.custom404 button:hover {
+  transform: scale(1.1);
+  color: black;
+  background: greenyellow;
+  border: none;
+}

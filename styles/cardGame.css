@@ -1,0 +1,26 @@
+.card_game {
+  border: 2px solid greenyellow;
+  border-top: none;
+  border-bottom: none;
+  width: 100%;
+  height: 100%;
+  width: fit-content;
+  overflow: hidden;
+  max-width: fit-content;
+  margin-right: 5px;
+  box-shadow: 0;
+  transition: 0.5s ease-in-out;
+}
+.card_game a img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.3s ease-in-out;
+}
+.card_game:hover {
+  overflow: hidden;
+}
+.card_game:hover img {
+  transform: scale(1.5);
+}

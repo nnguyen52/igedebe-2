@@ -1,0 +1,74 @@
+.btn {
+  width: 100%;
+  height: 100%;
+  flex: 1 auto;
+  margin: 5px;
+  padding: 10px 25px;
+  text-align: center;
+  background: black;
+  color: orange;
+  transition: all 0.5s ease-out;
+  cursor: crosshair;
+}
+
+/* ---- border_plus btns ---- */
+.border_plus {
+  /* block background */
+  background-color: transparent;
+}
+.border_plus .btn {
+  /* general */
+  background: transparent;
+}
+
+.border_plus .btn-3 {
+  position: relative;
+  z-index: 1;
+}
+.border_plus .btn-3 span:before,
+.border_plus .btn-3 span:after {
+  content: '';
+  display: block;
+  width: 10px;
+  height: 10px;
+  border: 0px solid greenyellow;
+  background-color: black;
+  position: absolute;
+  transition: width 0.4s 0.4s, height 0.4s 0.4s, background 0.4s;
+  z-index: -1;
+}
+.border_plus .btn-3 .deco_top:before {
+  top: -2px;
+  left: -2px;
+  border-top-width: 2px;
+  border-left-width: 2px;
+}
+.border_plus .btn-3 .deco_top:after {
+  top: -2px;
+  right: -2px;
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+.border_plus .btn-3 .deco_bottom:before {
+  bottom: -2px;
+  left: -2px;
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+.border_plus .btn-3 .deco_bottom:after {
+  bottom: -2px;
+  right: -2px;
+  border-bottom-width: 2px;
+  border-right-width: 2px;
+}
+.border_plus .btn-3:hover {
+  color: black;
+}
+.border_plus .btn-3:hover span:before,
+.border_plus .btn-3:hover span:after {
+  width: 60%;
+  height: 60%;
+  background-color: greenyellow;
+  color: black;
+  transition: width 0.4s, height 0.4s, background 0.4s 0.2s;
+}

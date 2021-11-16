@@ -1,0 +1,68 @@
+.game_by_ranking {
+  background: black;
+}
+.game_by_ranking {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  flex-direction: row;
+
+  /* grid-template-columns: repeat(auto-fill, minmax(calc(100vw / 3.1), 1fr)); */
+}
+.game_by_ranking .root_container {
+  width: calc(100vw / 3.1);
+}
+
+.game_by_ranking > * {
+  width: 100%;
+  max-width: 100vw;
+}
+.game_by_ranking .type {
+  text-align: center;
+  margin: 0px 1rem;
+}
+.game_by_ranking .type a {
+  width: 100%;
+}
+.game_by_ranking .typeTitle {
+  text-align: center;
+  margin-top: 10px;
+  color: greenyellow;
+}
+.game_by_ranking .row {
+  position: relative;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 1em auto;
+  max-width: 450px;
+  width: 100%;
+  align-self: auto;
+  transition: 0.5s;
+}
+.game_by_ranking .row .gameTitle {
+  color: greenyellow;
+  opacity: 0.5;
+}
+.game_by_ranking .row:hover .gameTitle {
+  opacity: 1;
+}
+.game_by_ranking .row:hover .game_date {
+  opacity: 0.8;
+}
+.game_by_ranking .row:hover {
+  cursor: pointer;
+  color: greenyellow;
+  border: 3px solid greenyellow;
+  box-shadow: 0 0 30px greenyellow;
+  text-shadow: 0 0 5px greenyellow;
+}
+@media (width<768px) {
+  .game_by_ranking .root_container {
+    width: 100%;
+    max-width: 100vw;
+  }
+  .game_by_ranking .root_container .row {
+    width: 100%;
+    max-width: 100vw;
+  }
+}

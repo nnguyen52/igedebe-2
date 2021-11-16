@@ -1,0 +1,84 @@
+###
+POST https://id.twitch.tv/oauth2/token?client_id=p4dupo27c854c3rf7eauoie9926fsz&client_secret=7cex8s18gva5qeadh4be53nbmqx73w&grant_type=client_credentials
+
+###
+
+POST https://api.igdb.com/v4/release_dates/
+Client-ID: p4dupo27c854c3rf7eauoie9926fsz
+Authorization: Bearer rxzn6opr691dwlo83xryosq5ij35c8
+
+fields id, game.name, game.hypes, game.cover.image_id ; where game.platforms = 48 & game.hypes > 50 & date < 1636085358066; sort date desc; limit 100;
+
+
+###
+POST http://localhost:5000/api/justReleasedGames
+
+###
+POST https://api.igdb.com/v4/games
+Client-ID: p4dupo27c854c3rf7eauoie9926fsz
+Authorization: Bearer rxzn6opr691dwlo83xryosq5ij35c8
+
+fields name, involved_companies.* ; where id =119388;
+# search "red dead redemption 2"; fields name ,first_release_date;
+# fields hypes,  websites.url , websites.category, involved_companies.company.name, involved_companies.developer,  involved_companies.publisher, summary,storyline, videos.video_id, name, rating, cover.image_id, first_release_date,artworks.image_id, dlcs, screenshots.image_id,similar_games.name,themes, total_rating ; where id = 1942 & hypes > 50;
+
+
+###
+POST http://localhost:5000/api/getPre500games
+
+###
+POST https://api.igdb.com/v4/games
+Client-ID: p4dupo27c854c3rf7eauoie9926fsz
+Authorization: Bearer rxzn6opr691dwlo83xryosq5ij35c8
+
+# fields hypes, websites.url , websites.category, involved_companies.company.name, summary,storyline, videos.video_id, name, rating, cover.image_id, first_release_date,artworks, dlcs, screenshots.image_id,similar_games.name,themes, total_rating ; where & hypes > 50;
+fields involved_companies.name, summary,storyline, videos.video_id, name, rating, cover.image_id, first_release_date,artworks, dlcs, screenshots.image_id ,similar_games.name , themes, total_rating; where id = 115862;
+
+###
+POST https://api.igdb.com/v4/games
+Client-ID: p4dupo27c854c3rf7eauoie9926fsz
+Authorization: Bearer rxzn6opr691dwlo83xryosq5ij35c8
+
+# fields name , cover.image_id, screenshots.image_id , videos.video_id , first_release_date , hypes; where hypes > 50 ; sort first_release_date desc; limit 500; 
+fields name, first_release_date , hypes; where hypes > 10 ; sort first_release_date desc ; limit 500;
+
+###
+POST https://api.igdb.com/v4/games
+
+###
+GET http://localhost:5000/api/getJustReleasedGamesPagination/1 
+
+###
+POST https://api.igdb.com/v4/games
+Client-ID: p4dupo27c854c3rf7eauoie9926fsz
+Authorization: Bearer rxzn6opr691dwlo83xryosq5ij35c8
+
+fields name , first_release_date , hypes; where hypes > 30 & first_release_date > 1636404613;sort hypes desc; sort first_release_date asc;  offset 20;limit 10;;
+
+###
+POST https://api.igdb.com/v4/games
+Client-ID: p4dupo27c854c3rf7eauoie9926fsz
+Authorization: Bearer rxzn6opr691dwlo83xryosq5ij35c8
+
+search "death strand"; fields name , hypes, cover.image_id; sort hypes desc; limit 10;
+
+###
+POST http://localhost:5000/api/searchGames/stranding
+
+###
+POST https://api.igdb.com/v4/platforms
+Client-ID: p4dupo27c854c3rf7eauoie9926fsz
+Authorization: Bearer rxzn6opr691dwlo83xryosq5ij35c8
+
+fields name; limit 100;
+
+###
+POST https://api.igdb.com/v4/games
+Client-ID: p4dupo27c854c3rf7eauoie9926fsz
+Authorization: Bearer rxzn6opr691dwlo83xryosq5ij35c8
+
+# fields  age_ratings.synopsis ,  themes.name, name , genres.name, platforms.name, release_dates.date,  hypes, similar_games.name , similar_games.cover.image_id, websites.url , websites.category, involved_companies.company.name, involved_companies.developer,  involved_companies.publisher, involved_companies.supporting,  summary,storyline, videos.video_id, name, rating, cover.image_id, first_release_date,artworks.image_id, dlcs, screenshots.image_id,similar_games.name,themes, total_rating ; where id = 103303;
+fields name; where id = 18361; 
+
+###
+GET http://localhost:5000/api

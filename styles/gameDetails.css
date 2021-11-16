@@ -1,0 +1,366 @@
+.gameDetail_container {
+  position: relative;
+  color: greenyellow;
+  /* hot fixes for social media */
+  padding-bottom: 3em;
+  background: black;
+}
+
+.gameDetail_container .cover_page {
+  max-width: 100vw;
+  width: 100%;
+  height: calc(100vh - (52px - 3em));
+}
+.gameDetail_container .cover_page img {
+  width: 100%;
+  height: 100%;
+}
+/* PAGE CONTENT */
+.gameDetail_container .cover_page_content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  background: linear-gradient(to bottom, rgba(255, 0, 0, 0), black);
+  padding: 10px;
+}
+
+.cover_page_content .cover_page_content_name {
+  grid-area: name;
+}
+.cover_page_content .cover_page_content_release_date {
+  grid-area: release_date;
+}
+.cover_page_content .cover_page_content_involved_companies {
+  grid-area: company;
+}
+.cover_page_content .cover_page_content_summary {
+  grid-area: summary;
+}
+.cover_page_content .cover_page_content_total_rating {
+  grid-area: total_rating;
+}
+.cover_page_content .cover_page_content_rating {
+  grid-area: rating;
+}
+.cover_page_content .cover_page_content_websites {
+  grid-area: websites;
+}
+.cover_page_content .cover_page_content_name_and_companies {
+  grid-area: name_and_companies;
+}
+.cover_page_content .main_cover_image {
+  grid-area: main_cover_image;
+}
+.cover_page_content .card_cover_details {
+  grid-area: card_cover_details;
+}
+.cover_page_content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  grid-auto-rows: minmax(min-content, max-content) !important;
+  grid-template-areas:
+    'name_and_companies name_and_companies name_and_companies'
+    'card_cover_details card_cover_details total_rating'
+    'card_cover_details card_cover_details rating'
+    'websites websites websites';
+}
+
+.cover_page_content .card_cover_details {
+  background: rgba(255, 100, 100, 0);
+  margin-top: 10px;
+  height: 100%;
+  max-height: 400px;
+  border: none;
+}
+.cover_page_content .card_cover_details img {
+  width: 100%;
+  max-height: 400px;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+.cover_page_content .card_cover_details .col-md-8 {
+  overflow-y: auto;
+  max-height: 400px !important;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 0 10px 10px 0;
+}
+.cover_page_content .card_cover_details_big_letter {
+  float: left;
+  font-size: 75px;
+  line-height: 60px;
+  padding-top: 4px;
+  padding-right: 8px;
+  color: greenyellow;
+  padding-left: 3px;
+}
+.cover_page_content .card_cover_details p {
+  color: white;
+  font-size: 1.2rem;
+}
+.cover_page_content_name_and_companies {
+  border-width: 0 0 3px 0;
+  border-style: solid;
+  border-image: linear-gradient(
+      90deg,
+      rgba(2, 0, 36, 1) 0%,
+      rgba(56, 176, 64, 1) 27%,
+      rgba(0, 255, 25, 1) 100%
+    )
+    1;
+}
+
+.cover_page_content_name,
+.cover_page_content_release_date {
+  background: black;
+  font-size: 40px;
+  color: greenyellow;
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 0 12px 12px 0;
+}
+.cover_page_content_release_date {
+  font-size: 1.5em;
+}
+.cover_page_content_involved_companies {
+  color: greenyellow;
+  background: black;
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 0 12px 12px 0;
+  font-size: 20px;
+}
+.cover_page_content_summary {
+  border: none;
+  height: fit-content;
+  outline: none;
+  margin-top: 10px;
+  padding: 5px;
+  color: white;
+  font-size: 1.2rem;
+}
+.cover_page_content_websites {
+  padding-top: 30px;
+  /* transform: translateY(50px); */
+}
+.cover_page_content_websites .social_media_icon {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(0deg, rgba(34, 121, 195, 1) 0%, rgba(173, 45, 253, 1) 100%);
+}
+.cover_page_content_websites h5 {
+  background: linear-gradient(0deg, rgba(34, 121, 195, 1) 0%, rgba(173, 45, 253, 1) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cover_page_content .cover_page_content_total_rating,
+.cover_page_content .cover_page_content_rating {
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+}
+
+.cover_page_content .cover_page_content_total_rating span,
+.cover_page_content .cover_page_content_rating span {
+  color: grey;
+}
+.cover_page_content .cover_page_content_total_rating span {
+  font-size: 40px;
+}
+.cover_page_content_rating span {
+  font-size: 34px;
+}
+.cover_page_content_total_rating .rating,
+.cover_page_content_rating .rating {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  text-align: center;
+}
+.cover_page_content_total_rating {
+  justify-self: center;
+  transform: translateX(-50px);
+  margin-right: 20px;
+}
+.cover_page_content_rating {
+  justify-self: end;
+  transform: translate(-20px, -100px);
+}
+.score_rating {
+  color: greenyellow;
+  background: black;
+  padding: 2px 10px;
+  border-radius: 10px;
+}
+.cover_page_content .cover_page_content_total_rating .rating_src,
+.cover_page_content .cover_page_content_rating .rating_src {
+  text-align: center;
+  font-size: 1rem;
+}
+.cover_page_content .cover_page_content_websites {
+  padding: 10px;
+  width: 100%;
+  max-width: 100vw;
+  margin-top: 1em;
+}
+.cover_page_content .cover_page_content_websites .website_icon {
+  margin: 0 10px;
+}
+/* hot fixes */
+@media (width > 600px && width < 768px) {
+  .cover_page_content_websites {
+    transform: translateY(100px);
+  }
+}
+/* @media () {
+  .cover_page_content_websites {
+    transform: translateY(100px);
+  }
+} */
+/* tablet-responsive */
+@media (min-width: 768px) {
+  .cover_page_content {
+    font-size: 1.5rem;
+  }
+  .cover_page_content h1 {
+    font-size: 3rem;
+  }
+  .cover_page_content .card_cover_details {
+    height: 100%;
+    max-height: 800px;
+    overflow-y: hidden;
+  }
+  .cover_page_content .card_cover_details .row {
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+  }
+  .cover_page_content .card_cover_details .row .col-md-8 {
+    background: none;
+    height: 100%;
+    max-height: 100vh;
+  }
+  .cover_page_content .card_cover_details .row .col-md-8::-webkit-scrollbar {
+    display: none;
+  }
+  .cover_page_content .card_cover_details .row .col-md-8 p {
+    font-size: 1.5rem;
+  }
+  .cover_page_content .cover_page_content_rating,
+  .cover_page_content .cover_page_content_total_rating {
+    position: relative;
+  }
+  .cover_page_content .cover_page_content_total_rating {
+    transform: translate(-10px, 80px);
+  }
+
+  .cover_page_content .cover_page_content_rating {
+    transform: translate(10px, -70px);
+  }
+  .cover_page_content .cover_page_content_rating .rating {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.8rem;
+  }
+  .cover_page_content .cover_page_content_total_rating .rating {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.1rem;
+  }
+}
+/* mobile responsive */
+@media (max-width: 600px) {
+  .gameDetail_container {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), black) !important;
+  }
+  .gameDetail_container .cover_page {
+    display: none;
+  }
+  .gameDetail_container .cover_page_content {
+    padding: 0;
+    position: relative;
+    background: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      'name_and_companies name_and_companies'
+      'card_cover_details card_cover_details'
+      'card_cover_details card_cover_details'
+      'total_rating rating'
+      'websites websites';
+  }
+  .gameDetail_container .cover_page_content > * {
+    width: 100%;
+    max-width: 100vw;
+  }
+  .gameDetail_container .cover_page_content .cover_page_content_name_and_companies h1 {
+    font-size: 2rem;
+  }
+  .gameDetail_container .cover_page_content .cover_page_content_name_and_companies h3 {
+    font-size: 1.2rem;
+  }
+
+  .gameDetail_container .cover_page_content .card_cover_details {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    height: 100%;
+    max-height: 100vh;
+    background: rgba(0, 0, 0, 0.3) !important;
+  }
+
+  .gameDetail_container,
+  .gameDetail_container .cover_page_content .card_cover_details {
+    background: none;
+  }
+  .gameDetail_container .cover_page_content .card_cover_details .row .col-md-4 {
+    padding-top: 10px;
+  }
+
+  .gameDetail_container .cover_page_content .card_cover_details .col-md-4 img,
+  .gameDetail_container .cover_page_content .card_cover_details .col-md-8 {
+    border-radius: 0% !important;
+    background: none;
+  }
+  .gameDetail_container .cover_page_content .card_cover_details .col-md-8 {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+  .gameDetail_container .cover_page_content .card_cover_details .col-md-8 p {
+    font-size: 1.2rem;
+  }
+  .gameDetail_container .cover_page_content .cover_page_content_total_rating {
+    min-height: 300px;
+    transform: translateX(0);
+  }
+  .gameDetail_container .cover_page_content .cover_page_content_rating {
+    transform: translate(-49px, 100px);
+  }
+  .gameDetail_container .cover_page_content .cover_page_content_total_rating .rating {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-60%, -100%);
+  }
+  .gameDetail_container .cover_page_content .cover_page_content_rating .rating {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -70%);
+  }
+}
