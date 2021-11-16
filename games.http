@@ -81,4 +81,19 @@ Authorization: Bearer rxzn6opr691dwlo83xryosq5ij35c8
 fields name; where id = 18361; 
 
 ###
-GET http://localhost:5000/api
+GET http://localhost:5000/api/getGamesDetails/1942
+
+###
+GET https://serverigedebe2.herokuapp.com/api/getJustReleasedGamesPagination/1 
+
+###
+GET http://localhost:5000/api/getPress500games
+
+###
+GET http://localhost:5000/api/getJustReleasedGamesPagination/0
+
+### 
+GET https://serverigedebe2.herokuapp.com/api/getJustReleasedGamesPagination/20
+
+###
+GET  https://serverigedebe2.herokuapp.com/api/getJustReleasedGamesPagination/0

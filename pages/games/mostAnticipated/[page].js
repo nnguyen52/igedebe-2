@@ -11,8 +11,8 @@ import { useRouter } from 'next/router';
 import { rangeArr } from '../../../utils/generateArrNum';
 import Image from 'next/image';
 import axios from 'axios';
-axios.defaults.baseURL = `http://localhost:5000/api`;
-const MostAnticipatedGames = ({ initGames, p }) => {
+import { apiURL } from '../../../utils/constants';
+const MostAnticipatedGames = ({ initGames = [], p }) => {
   const router = useRouter();
   const [data, setData] = useState(initGames);
   const [isSwr, setIsSWR] = useState(false);
@@ -25,6 +25,7 @@ const MostAnticipatedGames = ({ initGames, p }) => {
   };
 
   const { games, error, isLoading, setPage, page } = useMostAnticipatedGamesPagination(p);
+
   useEffect(() => {
     if (games === data) return;
     setIsSWR(true);
@@ -52,7 +53,7 @@ const MostAnticipatedGames = ({ initGames, p }) => {
     router.replace(`/games/mostAnticipated/0`);
   }
   if (isSwr && error) return <h2>Error</h2>;
-  if (isSwr && isLoading)
+  if ((isSwr && isLoading) || !data)
     return (
       <>
         <LoadingPage />
@@ -117,17 +118,17 @@ const MostAnticipatedGames = ({ initGames, p }) => {
 export default MostAnticipatedGames;
 
 export async function getStaticProps({ params }) {
-  let page = undefined;
-  if (!parseFloat(params.page)) {
-    page = 0;
-  } else {
-    page = params.page;
-  }
-  const initGames = await axios.get(`/getMostAnticipatedGamesPagination/${page}`);
+  const initGames = await axios.get(
+    `${apiURL}/api/getMostAnticipatedGamesPagination/${params.page}`
+  );
+  console.log(
+    `______________${apiURL}/api/getMostAnticipatedGamesPagination/${params.page}`,
+    initGames.data.length
+  );
   return {
     props: {
-      initGames: initGames.data,
-      p: page,
+      initGames: initGames.data || [],
+      p: params.page || 0,
     },
     revalidate: 60 * 60 * 1000,
   };

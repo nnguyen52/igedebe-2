@@ -1,12 +1,10 @@
 import useSWR from 'swr';
 import axios from 'axios';
 import { useState } from 'react';
-
-axios.defaults.baseURL = 'http://localhost:5000/api';
-
+import { apiURL } from './utils/constants';
 export const useJustReleaseGamesPagination = (offset) => {
-  const [page, setPage] = useState(() => (offset ? offset : 0), [offset]);
-  const { data, error } = useSWR(`/getJustReleasedGamesPagination/${page || 0}`, axios, {
+  const [page, setPage] = useState(offset || 0);
+  const { data, error } = useSWR(`${apiURL}/api/getJustReleasedGamesPagination/${page}`, axios, {
     dedupingInterval: 60 * 60 * 1000, //1 day
     revalidateOnFocus: false,
   });
@@ -21,7 +19,7 @@ export const useJustReleaseGamesPagination = (offset) => {
 //
 export const useComingSoonGamesPagination = (offset) => {
   const [page, setPage] = useState(offset || 0);
-  const { data, error } = useSWR(`/getJustComingSoonGamesPagination/${page}`, axios, {
+  const { data, error } = useSWR(`${apiURL}/api/getJustComingSoonGamesPagination/${page}`, axios, {
     dedupingInterval: 60 * 60 * 1000, //1 day
     revalidateOnFocus: false,
   });
@@ -36,7 +34,7 @@ export const useComingSoonGamesPagination = (offset) => {
 //
 export const useMostAnticipatedGamesPagination = (offset) => {
   const [page, setPage] = useState(offset || 0);
-  const { data, error } = useSWR(`/getMostAnticipatedGamesPagination/${page}`, axios, {
+  const { data, error } = useSWR(`${apiURL}/api/getMostAnticipatedGamesPagination/${page}`, axios, {
     dedupingInterval: 60 * 60 * 1000, //1 day
     revalidateOnFocus: false,
   });

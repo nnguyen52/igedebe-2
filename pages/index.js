@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Page from '../component/Page';
 import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:5000/api';
+import { apiURL } from '../utils/constants';
 export default function Home({ justReleasedGames, comingSoonGames, mostAnticipatedGames }) {
   return (
     <div>
@@ -44,14 +44,14 @@ export default function Home({ justReleasedGames, comingSoonGames, mostAnticipat
   );
 }
 export async function getStaticProps() {
-  const justReleasedGames = await axios.post('/justReleasedGames');
-  const comingSoonGames = await axios.post('/comingSoonGames');
-  const mostAnticipatedGames = await axios.post('/mostAnticipatedGames');
+  const justReleasedGames = await axios.post(`${apiURL}/api/justReleasedGames`);
+  const comingSoonGames = await axios.post(`${apiURL}/api/comingSoonGames`);
+  const mostAnticipatedGames = await axios.post(`${apiURL}/api/mostAnticipatedGames`);
   return {
     props: {
-      justReleasedGames: justReleasedGames.data.data,
-      comingSoonGames: comingSoonGames.data.filtered,
-      mostAnticipatedGames: mostAnticipatedGames.data.filtered,
+      justReleasedGames: justReleasedGames.data.data || [],
+      comingSoonGames: comingSoonGames.data.filtered || [],
+      mostAnticipatedGames: mostAnticipatedGames.data.filtered || [],
     },
     revalidate: (60 * 60 * 1000) / 2, //half day
   };

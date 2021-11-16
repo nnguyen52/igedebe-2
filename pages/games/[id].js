@@ -12,7 +12,7 @@ import { renderLayout } from '../../Layouts/generateLayout';
 import Image from 'next/image';
 import AdditionalDetails from '../../component/GameDetails/AdditionalDetails';
 import CustomBreak from '../../component/customBreak';
-
+import { apiURL } from '../../utils/constants';
 const GameDetails = ({ gameWithDetails }) => {
   if (!gameWithDetails[0]) return <></>;
   return (
@@ -185,22 +185,21 @@ const GameDetails = ({ gameWithDetails }) => {
         </div>
       )} */}
       <CustomBreak />
-
       <AdditionalDetails game={gameWithDetails[0]} />
     </>
   );
 };
 export async function getStaticProps({ params }) {
-  const res = await axios.post(`/getGamesDetails/${params.id}`);
+  const res = await axios.post(`${apiURL}/api/getGamesDetails/${params.id}`);
   return {
     props: {
-      gameWithDetails: res.data.data ? res.data.data : null,
+      gameWithDetails: res.data.data || [],
     },
-    revalidate: 1,
+    revalidate: (60 * 60 * 1000) / 4, //refresh detailed game every 1/4 day
   };
 }
 export async function getStaticPaths() {
-  const res = await axios.post('http://localhost:5000/api/getPre500games');
+  const res = await axios.get(`${apiURL}/api/getPre500games`);
   const paths = res.data.filtered.map((game) => ({
     params: { id: game.id.toString() },
   }));

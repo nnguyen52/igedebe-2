@@ -10,10 +10,9 @@ import LoadingPage from '../../../component/LoadingPage';
 import { useRouter } from 'next/router';
 import { rangeArr } from '../../../utils/generateArrNum';
 import Image from 'next/image';
-
 import axios from 'axios';
-axios.defaults.baseURL = `http://localhost:5000/api`;
-const LatestGames = ({ initGames, p }) => {
+import { apiURL } from '../../../utils/constants';
+const LatestGames = ({ initGames = [], p }) => {
   const router = useRouter();
   const [data, setData] = useState(initGames);
   const [isSwr, setIsSWR] = useState(false);
@@ -52,17 +51,19 @@ const LatestGames = ({ initGames, p }) => {
     router.replace(`/games/latest/${parseFloat(page) - 10}`);
     setPage(parseFloat(page) - 10);
   };
+
   if (!error && games.length === 0 && !isLoading) {
     setPage(0);
     router.replace(`/games/latest/0`);
   }
   if (isSwr && error) return <h2>server error...</h2>;
-  if (isSwr && isLoading)
+  if ((isSwr && isLoading) || !data)
     return (
       <>
         <LoadingPage />
       </>
     );
+
   return (
     <div className="detail_games_by_ranking_container">
       <Masonry
@@ -89,12 +90,6 @@ const LatestGames = ({ initGames, p }) => {
                         src={`https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fe8%2F27%2Faf%2Fe827af6fc27e84d4fce3636179f27c99.png&f=1&nofb=1`}
                         width={500}
                         height={720}
-                        style={{
-                          maxWidth: '1280px',
-                          width: '100%',
-                          maxHeight: `720px`,
-                          height: '100%',
-                        }}
                       />
                     )}
                   </div>
@@ -129,17 +124,11 @@ const LatestGames = ({ initGames, p }) => {
 export default LatestGames;
 
 export async function getStaticProps({ params }) {
-  let page = 0;
-  if (!parseFloat(params.page)) {
-    page = 0;
-  } else {
-    page = parseFloat(params.page);
-  }
-  const initGames = await axios.get(`/getJustReleasedGamesPagination/${page}`);
+  const initGames = await axios.get(`${apiURL}/api/getJustReleasedGamesPagination/${params.page}`);
   return {
     props: {
-      initGames: initGames.data,
-      p: page,
+      initGames: initGames.data || [],
+      p: params.page || 0,
     },
     revalidate: 60 * 60 * 1000,
   };

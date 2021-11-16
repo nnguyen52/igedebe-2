@@ -11,8 +11,8 @@ import { useRouter } from 'next/router';
 import { rangeArr } from '../../../utils/generateArrNum';
 import Image from 'next/image';
 import axios from 'axios';
-axios.defaults.baseURL = `http://localhost:5000/api`;
-const ComingSoonGames = ({ initGames, p }) => {
+import { apiURL } from '../../../utils/constants';
+const ComingSoonGames = ({ initGames = [], p }) => {
   const router = useRouter();
   const [data, setData] = useState(initGames);
   const [isSwr, setIsSWR] = useState(false);
@@ -39,19 +39,22 @@ const ComingSoonGames = ({ initGames, p }) => {
     if (!router.query.page) return;
     if (!parseFloat(router.query.page)) return router.replace(`/games/comingSoon/0`);
   }, [router.query.page]);
+
   const nextPage = () => {
     router.replace(`/games/comingSoon/${parseFloat(page) + 10}`);
     setPage(parseFloat(page) + 10);
   };
+
   const backPage = () => {
     router.replace(`/games/comingSoon/${parseFloat(page) - 10}`);
     setPage(parseFloat(page) - 10);
   };
+
   if (!error && games.length === 0 && !isLoading) {
     setPage(0);
     router.replace(`/games/comingSoon/0`);
   }
-  if (isSwr && error) return <h2>Error</h2>;
+  if (isSwr && error) return <h2>server error...</h2>;
   if (isSwr && isLoading)
     return (
       <>
@@ -118,17 +121,17 @@ const ComingSoonGames = ({ initGames, p }) => {
 export default ComingSoonGames;
 
 export async function getStaticProps({ params }) {
-  let page = undefined;
-  if (!parseFloat(params.page)) {
-    page = 0;
-  } else {
-    page = params.page;
-  }
-  const initGames = await axios.get(`/getJustComingSoonGamesPagination/${page}`);
+  const initGames = await axios.get(
+    `${apiURL}/api/getJustComingSoonGamesPagination/${params.page}`
+  );
+  console.log(
+    `______________${apiURL}/api/getJustComingSoonGamesPagination/${params.page}`,
+    initGames.data.length
+  );
   return {
     props: {
-      initGames: initGames.data,
-      p: page,
+      initGames: initGames.data || [],
+      p: params.page || 0,
     },
     revalidate: 60 * 60 * 1000,
   };

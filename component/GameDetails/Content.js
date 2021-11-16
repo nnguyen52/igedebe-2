@@ -4,7 +4,6 @@ import CardGame from '../CardGame';
 import { useRouter } from 'next/router';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import CustomButton from '../customButton';
 const Content = ({ game }) => {
   const router = useRouter();
   const [similar_games, setSimilarGames] = useState([]);
@@ -88,7 +87,7 @@ const Content = ({ game }) => {
       </div>
       <div className="recommendations" id="recommendations">
         <h4>Recommendations</h4>
-        {similar_games.length > 0 && (
+        {similar_games && (
           <>
             <div
               className="slider"

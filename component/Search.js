@@ -6,8 +6,7 @@ import { useRouter } from 'next/dist/client/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
-axios.defaults.baseURL = 'http://localhost:5000/api';
-
+import { apiURL } from '../utils/constants';
 export function useDebounce(value, delay) {
   const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
@@ -30,7 +29,7 @@ const Search = () => {
   const inputRef = useRef();
 
   const fetchGames = async () => {
-    const res = await axios.post(`/searchGames/${debouncedSearch}`);
+    const res = await axios.post(`${apiURL}/api/searchGames/${debouncedSearch}`);
     return res.data;
   };
 

@@ -5,9 +5,8 @@ import GamesByRanking from './MainPage/GamesByRanking';
 import CustomBreak from './customBreak';
 const Page = ({ justReleasedGames, comingSoonGames, mostAnticipatedGames }) => {
   const [windowWidth, setWindowWidth] = useState(undefined);
-  useEffect(() => {
-    console.log(process.env.NODE_ENV);
-  }, []);
+
+  // resize window
   useEffect(() => {
     if (typeof window !== 'undefined') {
       function handleResize() {
@@ -23,6 +22,7 @@ const Page = ({ justReleasedGames, comingSoonGames, mostAnticipatedGames }) => {
       console.log(err);
     }
   }, []);
+
   var settings = {
     dots: false,
     infinite: true,
@@ -34,6 +34,7 @@ const Page = ({ justReleasedGames, comingSoonGames, mostAnticipatedGames }) => {
     autoplay: true,
     autoplaySpeed: 5000,
   };
+
   return (
     <div>
       <div className="slider">
