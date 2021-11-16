@@ -11,7 +11,7 @@ const gamesCtrl = {
     try {
       const response = await apiConfig(
         '/games',
-        `fields name, first_release_date , hypes; where hypes > 10 ; sort first_release_date desc ; limit 500;`
+        `fields name, first_release_date , hypes; where hypes > 10 ; sort first_release_date desc ; limit 2;`
       );
 
       const filtered = filterDuplicatesByName_forGames(response.data);
