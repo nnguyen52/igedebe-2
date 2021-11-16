@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const gamesCtrl = require('../controllers/gamesCtrl');
-router.post('/getPre500games', gamesCtrl.getPre500games);
+router.get('/getPre500games', gamesCtrl.getPre500games);
 router.post('/justReleasedGames', gamesCtrl.getJustReleasedGames);
 router.post('/comingSoonGames', gamesCtrl.comingSoonGames);
 router.post('/mostAnticipatedGames', gamesCtrl.mostAnticipatedGames);
