@@ -4,7 +4,7 @@ router.get('/getPre500games', gamesCtrl.getPre500games);
 router.post('/justReleasedGames', gamesCtrl.getJustReleasedGames);
 router.post('/comingSoonGames', gamesCtrl.comingSoonGames);
 router.post('/mostAnticipatedGames', gamesCtrl.mostAnticipatedGames);
-router.get('/getGamesDetails/:id', gamesCtrl.getGamesDetails);
+router.post('/getGamesDetails/:id', gamesCtrl.getGamesDetails);
 router.get('/getJustReleasedGamesPagination/:offset', gamesCtrl.getJustReleasedGamesPagination);
 router.get(
   '/getMostAnticipatedGamesPagination/:offset',
