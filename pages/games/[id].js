@@ -203,9 +203,9 @@ export async function getStaticProps({ params }) {
   const res = await axios.post(`${apiURL}/api/getGamesDetails/${params.id}`);
   return {
     props: {
-      gameWithDetails: res.data.data,
+      gameWithDetails: res.data.data || [],
     },
-    revalidate: (60 * 60 * 1000) / 4, //refresh detailed game every 1/4 day
+    revalidate: 1, //refresh detailed game every 1/4 day
   };
 }
 export async function getStaticPaths() {
