@@ -13,6 +13,7 @@ import Image from 'next/image';
 import AdditionalDetails from '../../component/GameDetails/AdditionalDetails';
 import CustomBreak from '../../component/customBreak';
 import { apiURL } from '../../utils/constants';
+import no_cover_image from '../../assets/no_image_cover.png';
 const GameDetails = ({ gameWithDetails }) => {
   if (!gameWithDetails[0]) return <></>;
   return (
@@ -60,7 +61,11 @@ const GameDetails = ({ gameWithDetails }) => {
               <div className="col-md-4">
                 <Image
                   className="img-fluid rounded-start"
-                  src={`https://images.igdb.com/igdb/image/upload/t_1080p/${gameWithDetails[0].cover.image_id}.jpg`}
+                  src={
+                    gameWithDetails[0].cover
+                      ? `https://images.igdb.com/igdb/image/upload/t_1080p/${gameWithDetails[0].cover.image_id}.jpg`
+                      : no_cover_image
+                  }
                   alt=""
                   width={1920}
                   height={2048}
@@ -195,7 +200,7 @@ export async function getStaticProps({ params }) {
     props: {
       gameWithDetails: res.data.data || [],
     },
-    revalidate: 1, //refresh detailed game every 1/4 day
+    revalidate: (60 * 60 * 1000) / 4, //refresh detailed game every 1/4 day
   };
 }
 export async function getStaticPaths() {

@@ -16,7 +16,6 @@ import epic from '../assets/epic.png';
 import itch from '../assets/itch.png';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 const WebsiteEnums = ({ cate, url }) => {
   const [imgSrc, setImgSrc] = useState('');
 
