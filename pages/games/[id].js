@@ -23,7 +23,7 @@ const GameDetails = ({ gameWithDetails }) => {
       return;
     }
     if (!gameWithDetails[0]) return router.reload();
-  }, []);
+  }, [router.query.id]);
   if (!gameWithDetails[0])
     return (
       <>

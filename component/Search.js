@@ -41,7 +41,7 @@ const Search = () => {
 
   useEffect(() => {
     if (!inputRef) return;
-    return inputRef.current.focus();
+    // return inputRef.current.focus();
   }, [inputRef]);
 
   useEffect(() => {
