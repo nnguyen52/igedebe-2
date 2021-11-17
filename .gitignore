@@ -2,5 +2,4 @@ games.http
 server/node_modules
 server/.env
 node_modules
-server
 /.next/
