@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
@@ -14,11 +14,20 @@ import AdditionalDetails from '../../component/GameDetails/AdditionalDetails';
 import CustomBreak from '../../component/customBreak';
 import { apiURL } from '../../utils/constants';
 import no_cover_image from '../../assets/no_image_cover.png';
+import { useRouter } from 'next/router';
+import LoadingPage from '../../component/LoadingPage';
 const GameDetails = ({ gameWithDetails }) => {
+  const router = useRouter();
+  useEffect(() => {
+    if (gameWithDetails[0]) {
+      return;
+    }
+    if (!gameWithDetails[0]) return router.reload();
+  }, []);
   if (!gameWithDetails[0])
     return (
       <>
-        <span style={{ color: 'greenyellow' }}>it should be here</span>
+        <LoadingPage />
       </>
     );
   return (
@@ -201,17 +210,22 @@ const GameDetails = ({ gameWithDetails }) => {
 };
 export async function getStaticProps({ params }) {
   const res = await axios.post(`${apiURL}/api/getGamesDetails/${params.id}`);
+  // make a placeholder
+  let game = [];
+  if (res.data.data) {
+    game = res.data.data;
+  }
   return {
     props: {
-      gameWithDetails: res.data.data || [],
+      gameWithDetails: game,
     },
-    revalidate: (60 * 60 * 1000) / 4, //refresh detailed game every 1/4 day
+    revalidate: game.length > 0 ? (60 * 60 * 1000) / 4 : 1, //refresh detailed game every 1/4 day
   };
 }
 export async function getStaticPaths() {
   const res = await axios.get(`${apiURL}/api/getPre500games`);
-  const paths = res.data.filtered.map((game) => ({
-    params: { id: game.id.toString() },
+  const paths = res.data.filtered.map((game, index) => ({
+    params: { id: game.id.toString(), index },
   }));
   return { paths, fallback: 'blocking' };
 }
