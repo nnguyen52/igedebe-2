@@ -15,7 +15,12 @@ import CustomBreak from '../../component/customBreak';
 import { apiURL } from '../../utils/constants';
 import no_cover_image from '../../assets/no_image_cover.png';
 const GameDetails = ({ gameWithDetails }) => {
-  if (!gameWithDetails[0]) return <></>;
+  if (!gameWithDetails[0])
+    return (
+      <>
+        <span style={{ color: 'greenyellow' }}>it should be here</span>
+      </>
+    );
   return (
     <>
       <div className="gameDetail_container">
