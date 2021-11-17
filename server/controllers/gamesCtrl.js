@@ -30,6 +30,7 @@ const gamesCtrl = {
         )}; sort hypes desc; sort first_release_date desc; limit 200;`
       );
       const data = filterDuplicatesByName_forGames(response.data);
+      if (!data) return res.json({ data: [] });
       res.json({ msg: 'ok', data });
     } catch (err) {
       res.status(500).json({ err: err.message });
@@ -47,6 +48,7 @@ const gamesCtrl = {
       const filtered = response.data.filter(({ name }, index) =>
         name ? !names.includes(name, index + 1) : name
       );
+      if (!filtered) return res.json({ msg: 'something is wrong here.', filtered: [] });
       res.json({ msg: 'ok', filtered });
     } catch (err) {
       return res.status(500).json({ err: err.message });
@@ -62,6 +64,7 @@ const gamesCtrl = {
       const filtered = response.data.filter(({ name }, index) =>
         name ? !names.includes(name, index + 1) : name
       );
+      if (!filtered) return res.json({ msg: 'something is wrong here.', filtered: [] });
       res.json({ msg: 'ok', filtered });
     } catch (err) {
       return res.status(500).json({ err: err.message });
