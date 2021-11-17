@@ -47,22 +47,23 @@ const SideContent = ({ game }) => {
           </>
         )}
       </div>
-      {game.involved_companies.filter((each) => each.developer).length > 0 && (
-        <>
-          <h5>Developer</h5>
-          <div className="sub_content">
-            {game.involved_companies
-              .filter((each) => each.developer)
-              .map((each, index) => {
-                return (
-                  <div className="details" key={index}>
-                    {`+ ${each.company.name}`}
-                  </div>
-                );
-              })}
-          </div>
-        </>
-      )}
+      {game.involved_companies &&
+        game.involved_companies.filter((each) => each.developer).length > 0 && (
+          <>
+            <h5>Developer</h5>
+            <div className="sub_content">
+              {game.involved_companies
+                .filter((each) => each.developer)
+                .map((each, index) => {
+                  return (
+                    <div className="details" key={index}>
+                      {`+ ${each.company.name}`}
+                    </div>
+                  );
+                })}
+            </div>
+          </>
+        )}
 
       {game.involved_companies && (
         <div>

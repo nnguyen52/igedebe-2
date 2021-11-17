@@ -49,18 +49,19 @@ const Content = ({ game }) => {
               .join(', ')}`}
           </>
         )}
-        {game.involved_companies.filter((each) => each.developer).length > 0 && (
-          <>
-            <h5>Developer</h5>
-            {game.involved_companies.filter((each) => each.developer).length == 0 ? (
-              <>
-                <h2>this game has no developer</h2>{' '}
-              </>
-            ) : (
-              `${game.involved_companies.filter((each) => each.developer)[0].company.name}`
-            )}
-          </>
-        )}
+        {game.involved_companies &&
+          game.involved_companies.filter((each) => each.developer).length > 0 && (
+            <>
+              <h5>Developer</h5>
+              {game.involved_companies.filter((each) => each.developer).length == 0 ? (
+                <>
+                  <h2>this game has no developer</h2>{' '}
+                </>
+              ) : (
+                `${game.involved_companies.filter((each) => each.developer)[0].company.name}`
+              )}
+            </>
+          )}
         {/* {game && (
           <div>
             <pre

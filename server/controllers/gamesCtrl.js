@@ -13,7 +13,6 @@ const gamesCtrl = {
         '/games',
         `fields name, first_release_date , hypes; where hypes > 10 ; sort first_release_date desc ; limit 2;`
       );
-
       const filtered = filterDuplicatesByName_forGames(response.data);
       res.json({ msg: 'ok', filtered });
     } catch (err) {
@@ -50,7 +49,6 @@ const gamesCtrl = {
       );
       res.json({ msg: 'ok', filtered });
     } catch (err) {
-      console.log(err.message);
       return res.status(500).json({ err: err.message });
     }
   },
@@ -77,7 +75,6 @@ const gamesCtrl = {
       );
       res.json({ msg: 'ok', data: response.data });
     } catch (err) {
-      console.log(err);
       res.status(500).json({ err: err.message });
     }
   },
@@ -96,7 +93,6 @@ const gamesCtrl = {
       if (!response.data) return res.json([]);
       return res.json(response.data.splice(0, 10));
     } catch (err) {
-      console.log('JUST_GAME_ERR', err);
       return res.status(500).json({ err: err.message });
     }
   },
@@ -113,7 +109,6 @@ const gamesCtrl = {
       if (!response.data) return res.json([]);
       return res.json(response.data.splice(0, 10));
     } catch (err) {
-      console.log('COMING_SOON_ERR', err);
       return res.status(500).json({ err: err.message });
     }
   },
@@ -129,7 +124,6 @@ const gamesCtrl = {
 
       return res.json(response.data.splice(0, 10));
     } catch (err) {
-      console.log('MOST_ANTI_ERR', err);
       return res.status(500).json({ err: err.message });
     }
   },

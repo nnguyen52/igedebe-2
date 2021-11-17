@@ -124,10 +124,6 @@ export async function getStaticProps({ params }) {
   const initGames = await axios.get(
     `${apiURL}/api/getJustComingSoonGamesPagination/${params.page}`
   );
-  console.log(
-    `______________${apiURL}/api/getJustComingSoonGamesPagination/${params.page}`,
-    initGames.data.length
-  );
   return {
     props: {
       initGames: initGames.data || [],

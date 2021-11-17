@@ -96,4 +96,4 @@ GET http://localhost:5000/api/getJustReleasedGamesPagination/0
 GET https://serverigedebe2.herokuapp.com/api/getJustReleasedGamesPagination/20
 
 ###
-GET  https://serverigedebe2.herokuapp.com/api/getJustReleasedGamesPagination/0
+POST  https://serverigedebe2.herokuapp.com/api/getGamesDetails/139112
