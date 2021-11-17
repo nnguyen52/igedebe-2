@@ -205,7 +205,7 @@ export async function getStaticProps({ params }) {
     props: {
       gameWithDetails: res.data.data || [],
     },
-    revalidate: 1, //refresh detailed game every 1/4 day
+    revalidate: (60 * 60 * 1000) / 4, //refresh detailed game every 1/4 day
   };
 }
 export async function getStaticPaths() {
