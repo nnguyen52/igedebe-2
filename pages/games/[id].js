@@ -27,7 +27,7 @@ const GameDetails = ({ gameWithDetails }) => {
   if (!gameWithDetails[0])
     return (
       <>
-        <LoadingPage />
+        <LoadingPage autoplay={false} loop={false} />
       </>
     );
   return (
