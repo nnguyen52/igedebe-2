@@ -76,6 +76,7 @@ const gamesCtrl = {
         '/games',
         `fields player_perspectives.name, game_modes.name, release_dates.platform.name, age_ratings.content_descriptions.* , alternative_names.name , game_engines.name,  websites.url,name ,themes.name, genres.name, platforms.name, release_dates.date,  hypes, similar_games.name , similar_games.cover.image_id, websites.url , websites.category, involved_companies.company.name, involved_companies.developer,  involved_companies.publisher, involved_companies.supporting,  summary,storyline, videos.video_id,  rating, cover.image_id, first_release_date,artworks.image_id, dlcs, screenshots.image_id,similar_games.name, total_rating ; where id = ${req.params.id};`
       );
+      if (!response) return res.json({ data: [] });
       res.json({ msg: 'ok', data: response.data });
     } catch (err) {
       res.status(500).json({ err: err.message });
