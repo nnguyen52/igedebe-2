@@ -20,14 +20,14 @@ import LoadingPage from '../../component/LoadingPage';
 const GameDetails = ({ gameWithDetails }) => {
   const [game, setGame] = useState(gameWithDetails[0]);
   const router = useRouter();
-
   useEffect(() => {
     (async () => {
-      // if (gameWithDetails[0] && gameWithDetails[0].id === router.query.id) return;
-      if (gameWithDetails.length > 0) return setGame((prevState) => gameWithDetails[0]);
+      if (gameWithDetails[0] && gameWithDetails[0] !== game)
+        return setGame((prev) => gameWithDetails[0]);
+      if (gameWithDetails.length > 0) return setGame((prev) => gameWithDetails[0]);
       const getDetailedGame = async (id) => {
         const res = await axios({ method: 'POST', url: `${apiURL}/api/getGamesDetails/${id}` });
-        setGame(res.data.data[0]);
+        setGame((prev) => res.data.data[0]);
       };
       if (gameWithDetails.length === 0 || !gameWithDetails) {
         await getDetailedGame(router.query.id);
@@ -186,8 +186,22 @@ const GameDetails = ({ gameWithDetails }) => {
           )}
         </div>
       </div>
-      {(game.screenshots || game.videos || game.artworks) && (
-        <Gallery screenshots={game.screenshots} videos={game.videos} artworks={game.artworks} />
+      {gameWithDetails[0]?.screenshots ||
+      gameWithDetails[0]?.videos ||
+      gameWithDetails[0]?.artworks ? (
+        <Gallery
+          screenshots={gameWithDetails[0]?.screenshots}
+          videos={gameWithDetails[0]?.videos}
+          artworks={gameWithDetails[0]?.artworks}
+        />
+      ) : (
+        (game?.screenshots || game?.videos || game?.artworks) && (
+          <Gallery
+            screenshots={game?.screenshots}
+            videos={game?.videos}
+            artworks={game?.artworks}
+          />
+        )
       )}
       {/* {game && (
         <div>
