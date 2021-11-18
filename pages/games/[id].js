@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
@@ -16,15 +16,25 @@ import { apiURL } from '../../utils/constants';
 import no_cover_image from '../../assets/no_image_cover.png';
 import { useRouter } from 'next/router';
 import LoadingPage from '../../component/LoadingPage';
+
 const GameDetails = ({ gameWithDetails }) => {
+  const [game, setGame] = useState(gameWithDetails[0]);
   const router = useRouter();
+
   useEffect(() => {
-    if (gameWithDetails[0]) {
-      return;
-    }
-    if (!gameWithDetails[0]) return router.reload();
+    (async () => {
+      // if (gameWithDetails[0] && gameWithDetails[0].id === router.query.id) return;
+      if (gameWithDetails.length > 0) return setGame((prevState) => gameWithDetails[0]);
+      const getDetailedGame = async (id) => {
+        const res = await axios({ method: 'POST', url: `${apiURL}/api/getGamesDetails/${id}` });
+        setGame(res.data.data[0]);
+      };
+      if (gameWithDetails.length === 0 || !gameWithDetails) {
+        await getDetailedGame(router.query.id);
+      }
+    })();
   }, [router.query.id]);
-  if (!gameWithDetails[0])
+  if (!game)
     return (
       <>
         <LoadingPage autoplay={false} loop={false} />
@@ -37,14 +47,14 @@ const GameDetails = ({ gameWithDetails }) => {
           {
             <Image
               src={
-                gameWithDetails[0].screenshots
-                  ? `https://images.igdb.com/igdb/image/upload/t_1080p/${gameWithDetails[0].screenshots[0].image_id}.jpg`
-                  : gameWithDetails[0].artworks
-                  ? `https://images.igdb.com/igdb/image/upload/t_1080p/${gameWithDetails[0].artworks[0].image_id}.jpg`
-                  : gameWithDetails[0].videos
-                  ? `http://img.youtube.com/vi/${gameWithDetails[0].videos[0].video_id}/hqdefault.jpg`
-                  : gameWithDetails[0].cover
-                  ? `https://images.igdb.com/igdb/image/upload/t_1080p/${gameWithDetails[0].cover.image_id}.jpg`
+                game.screenshots
+                  ? `https://images.igdb.com/igdb/image/upload/t_1080p/${game.screenshots[0].image_id}.jpg`
+                  : game.artworks
+                  ? `https://images.igdb.com/igdb/image/upload/t_1080p/${game.artworks[0].image_id}.jpg`
+                  : game.videos
+                  ? `http://img.youtube.com/vi/${game.videos[0].video_id}/hqdefault.jpg`
+                  : game.cover
+                  ? `https://images.igdb.com/igdb/image/upload/t_1080p/${game.cover.image_id}.jpg`
                   : `https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwallpapercave.com%2Fwp%2FnTwzv3B.jpg&f=1&nofb=1`
               }
               alt="background cover"
@@ -54,18 +64,16 @@ const GameDetails = ({ gameWithDetails }) => {
         </div>
         <div className="cover_page_content">
           <div className="cover_page_content_name_and_companies">
-            <h1 className="cover_page_content_name">{gameWithDetails[0].name}</h1>
-            {gameWithDetails[0].first_release_date && (
+            <h1 className="cover_page_content_name">{game.name}</h1>
+            {game.first_release_date && (
               <h3 className="cover_page_content_release_date">
-                <small>{dateFormat(gameWithDetails[0].first_release_date)}</small>
+                <small>{dateFormat(game.first_release_date)}</small>
               </h3>
             )}
             <h3 className="cover_page_content_involved_companies">
-              {gameWithDetails[0].involved_companies
-                ? gameWithDetails[0].involved_companies.filter((company) => company.developer)
-                    .length > 0
-                  ? gameWithDetails[0].involved_companies.filter((company) => company.developer)[0]
-                      .company.name
+              {game.involved_companies
+                ? game.involved_companies.filter((company) => company.developer).length > 0
+                  ? game.involved_companies.filter((company) => company.developer)[0].company.name
                   : 'TBD'
                 : 'TBD'}
             </h3>
@@ -76,8 +84,8 @@ const GameDetails = ({ gameWithDetails }) => {
                 <Image
                   className="img-fluid rounded-start"
                   src={
-                    gameWithDetails[0].cover
-                      ? `https://images.igdb.com/igdb/image/upload/t_1080p/${gameWithDetails[0].cover.image_id}.jpg`
+                    game.cover
+                      ? `https://images.igdb.com/igdb/image/upload/t_1080p/${game.cover.image_id}.jpg`
                       : no_cover_image
                   }
                   alt=""
@@ -88,13 +96,13 @@ const GameDetails = ({ gameWithDetails }) => {
               </div>
               <div className="col-md-8">
                 <div className="card-body">
-                  {gameWithDetails[0].summary && (
+                  {game.summary && (
                     <>
                       <p>
                         <span className="card_cover_details_big_letter">
-                          {gameWithDetails[0].summary.charAt(0)}
+                          {game.summary.charAt(0)}
                         </span>
-                        {gameWithDetails[0].summary.substring(1)}
+                        {game.summary.substring(1)}
                       </p>
                     </>
                   )}
@@ -106,30 +114,28 @@ const GameDetails = ({ gameWithDetails }) => {
           <div className="cover_page_content_total_rating">
             <div className="progress_bar" style={{ padding: 0 }}>
               <ProgressBar
-                progress={Math.floor(gameWithDetails[0].total_rating)}
+                progress={Math.floor(game.total_rating)}
                 radius={90}
                 strokeWidth={10}
                 trackStrokeWidth={15}
                 strokeColor={
-                  colorRating(gameWithDetails[0].total_rating) === 'No rating'
+                  colorRating(game.total_rating) === 'No rating'
                     ? 'grey'
-                    : colorRating(gameWithDetails[0].total_rating)
+                    : colorRating(game.total_rating)
                 }
               />
             </div>
             <div className="rating">
-              {gameWithDetails[0].total_rating ? (
-                <span style={{ color: colorRating(gameWithDetails[0].total_rating) }}>
-                  {Math.round(gameWithDetails[0].total_rating)}
+              {game.total_rating ? (
+                <span style={{ color: colorRating(game.total_rating) }}>
+                  {Math.round(game.total_rating)}
                 </span>
               ) : (
                 <span>NA</span>
               )}
               <ScoreRating
                 className="score_rating"
-                number={
-                  gameWithDetails[0].total_rating ? gameWithDetails[0].total_rating : undefined
-                }
+                number={game.total_rating ? game.total_rating : undefined}
               />
             </div>
             <div className="rating_src">Total rating</div>
@@ -137,33 +143,29 @@ const GameDetails = ({ gameWithDetails }) => {
           <div className="cover_page_content_rating">
             <div className="progress_bar">
               <ProgressBar
-                progress={gameWithDetails[0]?.rating ? gameWithDetails[0].rating : 100}
+                progress={game?.rating ? game.rating : 100}
                 radius={75}
                 strokeWidth={10}
                 trackStrokeWidth={15}
                 strokeColor={
-                  colorRating(gameWithDetails[0].rating) === 'No rating'
-                    ? 'grey'
-                    : colorRating(gameWithDetails[0].rating)
+                  colorRating(game.rating) === 'No rating' ? 'grey' : colorRating(game.rating)
                 }
               />
             </div>
             <div className="rating">
-              {gameWithDetails[0].rating ? (
-                <span style={{ color: colorRating(gameWithDetails[0].rating) }}>
-                  {Math.round(gameWithDetails[0].rating)}
-                </span>
+              {game.rating ? (
+                <span style={{ color: colorRating(game.rating) }}>{Math.round(game.rating)}</span>
               ) : (
                 <span>NA</span>
               )}
               <ScoreRating
                 className="score_rating"
-                number={gameWithDetails[0].rating ? gameWithDetails[0].rating : undefined}
+                number={game.rating ? game.rating : undefined}
               />
             </div>
             <div className="rating_src">IGDB only</div>
           </div>
-          {gameWithDetails[0].websites && (
+          {game.websites && (
             <div className="cover_page_content_websites">
               <h5>Social media</h5>
               <div
@@ -172,7 +174,7 @@ const GameDetails = ({ gameWithDetails }) => {
                   flexWrap: 'wrap',
                 }}
               >
-                {gameWithDetails[0].websites.map((web, index) => {
+                {game.websites.map((web, index) => {
                   return (
                     <div key={index} className="website_icon">
                       <WebsiteEnums cate={web.category} url={web.url} />
@@ -184,27 +186,21 @@ const GameDetails = ({ gameWithDetails }) => {
           )}
         </div>
       </div>
-      {(gameWithDetails[0].screenshots ||
-        gameWithDetails[0].videos ||
-        gameWithDetails[0].artworks) && (
-        <Gallery
-          screenshots={gameWithDetails[0].screenshots}
-          videos={gameWithDetails[0].videos}
-          artworks={gameWithDetails[0].artworks}
-        />
+      {(game.screenshots || game.videos || game.artworks) && (
+        <Gallery screenshots={game.screenshots} videos={game.videos} artworks={game.artworks} />
       )}
-      {/* {gameWithDetails[0] && (
+      {/* {game && (
         <div>
           <pre
             style={{ color: 'white', background: 'black' }}
             dangerouslySetInnerHTML={{
-              __html: JSON.stringify(gameWithDetails[0], null, 2),
+              __html: JSON.stringify(game, null, 2),
             }}
           />
         </div>
       )} */}
       <CustomBreak />
-      <AdditionalDetails game={gameWithDetails[0]} />
+      <AdditionalDetails game={game} />
     </>
   );
 };
@@ -215,6 +211,7 @@ export async function getStaticProps({ params }) {
   if (res.data.data) {
     game = res.data.data;
   }
+  if (!res.data.data) console.log('_______ERROR______', res.config.url);
   return {
     props: {
       gameWithDetails: game,
