@@ -225,7 +225,6 @@ export async function getStaticProps({ params }) {
   if (res.data.data) {
     game = res.data.data;
   }
-  if (!res.data.data) console.log('_______ERROR______', res.config.url);
   return {
     props: {
       gameWithDetails: game,
