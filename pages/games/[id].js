@@ -16,6 +16,15 @@ import { apiURL } from '../../utils/constants';
 import no_cover_image from '../../assets/no_image_cover.png';
 import { useRouter } from 'next/router';
 import LoadingPage from '../../component/LoadingPage';
+import { generateImage } from '../../utils/generateImage';
+import blurImageURL from '../../assets/blur.png';
+//NOTE: this is important error that i can not fix (lack of knowledges)
+// explaining:
+// by default: the IGDB remote server allow only 4 requests per second by calling APIs
+// in build time, i generate array with 500 games
+// and in getStaticProps, it will call API for each item from that array.
+// basically every 1 second i can only generate 4 games.
+// so i have to use useEffect to fetch game that not generated in build time
 
 const GameDetails = ({ gameWithDetails }) => {
   const [game, setGame] = useState(gameWithDetails[0]);
@@ -24,17 +33,17 @@ const GameDetails = ({ gameWithDetails }) => {
     (async () => {
       if (gameWithDetails[0] && gameWithDetails[0] !== game)
         return setGame((prev) => gameWithDetails[0]);
-      if (gameWithDetails.length > 0) return setGame((prev) => gameWithDetails[0]);
+      if (gameWithDetails !== undefined) return setGame((prev) => gameWithDetails[0]);
       const getDetailedGame = async (id) => {
         const res = await axios({ method: 'POST', url: `${apiURL}/api/getGamesDetails/${id}` });
         setGame((prev) => res.data.data[0]);
       };
-      if (gameWithDetails.length === 0 || !gameWithDetails) {
+      if (gameWithDetails === undefined) {
         await getDetailedGame(router.query.id);
       }
     })();
-  }, [router.query.id]);
-  if (!game)
+  }, [router.query.id, gameWithDetails[0], game]);
+  if (!game || !gameWithDetails)
     return (
       <>
         <LoadingPage autoplay={false} loop={false} />
@@ -44,34 +53,18 @@ const GameDetails = ({ gameWithDetails }) => {
     <>
       <div className="gameDetail_container">
         <div className="cover_page">
-          {
-            <Image
-              src={
-                game.screenshots
-                  ? `https://images.igdb.com/igdb/image/upload/t_1080p/${game.screenshots[0].image_id}.jpg`
-                  : game.artworks
-                  ? `https://images.igdb.com/igdb/image/upload/t_1080p/${game.artworks[0].image_id}.jpg`
-                  : game.videos
-                  ? `http://img.youtube.com/vi/${game.videos[0].video_id}/hqdefault.jpg`
-                  : game.cover
-                  ? `https://images.igdb.com/igdb/image/upload/t_1080p/${game.cover.image_id}.jpg`
-                  : `https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwallpapercave.com%2Fwp%2FnTwzv3B.jpg&f=1&nofb=1`
-              }
-              alt="background cover"
-              layout="fill"
-            />
-          }
+          {<Image src={generateImage(game)} alt="background cover" layout="fill" />}
         </div>
         <div className="cover_page_content">
           <div className="cover_page_content_name_and_companies">
             <h1 className="cover_page_content_name">{game.name}</h1>
-            {game.first_release_date && (
+            {game.first_release_date !== undefined && (
               <h3 className="cover_page_content_release_date">
                 <small>{dateFormat(game.first_release_date)}</small>
               </h3>
             )}
             <h3 className="cover_page_content_involved_companies">
-              {game.involved_companies
+              {game.involved_companies !== undefined && game.involved_companies.length > 0
                 ? game.involved_companies.filter((company) => company.developer).length > 0
                   ? game.involved_companies.filter((company) => company.developer)[0].company.name
                   : 'TBD'
@@ -84,10 +77,12 @@ const GameDetails = ({ gameWithDetails }) => {
                 <Image
                   className="img-fluid rounded-start"
                   src={
-                    game.cover
+                    game.cover !== undefined
                       ? `https://images.igdb.com/igdb/image/upload/t_1080p/${game.cover.image_id}.jpg`
                       : no_cover_image
                   }
+                  // placeholder="blur"
+                  // blurDataURL={blurImageURL}
                   alt=""
                   width={1920}
                   height={2048}
@@ -96,7 +91,7 @@ const GameDetails = ({ gameWithDetails }) => {
               </div>
               <div className="col-md-8">
                 <div className="card-body">
-                  {game.summary && (
+                  {game.summary !== undefined && (
                     <>
                       <p>
                         <span className="card_cover_details_big_letter">
@@ -118,11 +113,7 @@ const GameDetails = ({ gameWithDetails }) => {
                 radius={90}
                 strokeWidth={10}
                 trackStrokeWidth={15}
-                strokeColor={
-                  colorRating(game.total_rating) === 'No rating'
-                    ? 'grey'
-                    : colorRating(game.total_rating)
-                }
+                strokeColor={colorRating(game.total_rating)}
               />
             </div>
             <div className="rating">
@@ -153,7 +144,7 @@ const GameDetails = ({ gameWithDetails }) => {
               />
             </div>
             <div className="rating">
-              {game.rating ? (
+              {game.rating !== undefined ? (
                 <span style={{ color: colorRating(game.rating) }}>{Math.round(game.rating)}</span>
               ) : (
                 <span>NA</span>
@@ -165,7 +156,7 @@ const GameDetails = ({ gameWithDetails }) => {
             </div>
             <div className="rating_src">IGDB only</div>
           </div>
-          {game.websites && (
+          {game.websites !== undefined && (
             <div className="cover_page_content_websites">
               <h5>Social media</h5>
               <div
@@ -186,9 +177,9 @@ const GameDetails = ({ gameWithDetails }) => {
           )}
         </div>
       </div>
-      {gameWithDetails[0]?.screenshots ||
-      gameWithDetails[0]?.videos ||
-      gameWithDetails[0]?.artworks ? (
+      {(gameWithDetails[0].screenshots !== undefined && gameWithDetails[0]?.screenshots) ||
+      (gameWithDetails[0].videos !== undefined && gameWithDetails[0]?.videos) ||
+      (gameWithDetails[0].artworks !== undefined && gameWithDetails[0]?.artworks) ? (
         <Gallery
           screenshots={gameWithDetails[0]?.screenshots}
           videos={gameWithDetails[0]?.videos}

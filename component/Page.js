@@ -15,7 +15,6 @@ const Page = ({ justReleasedGames, comingSoonGames, mostAnticipatedGames }) => {
       window.addEventListener('resize', handleResize);
       handleResize();
     }
-
     try {
       return () => window.removeEventListener('resize', window);
     } catch (err) {

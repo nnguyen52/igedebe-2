@@ -32,7 +32,7 @@ const ScoreRating = ({ number }) => {
   );
 };
 export const colorRating = (number) => {
-  if (!number) return 'No rating';
+  if (!number) return 'grey';
   if (number > 0 && number <= 20) {
     return '#ff0000';
   }

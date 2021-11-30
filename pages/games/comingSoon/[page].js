@@ -38,7 +38,7 @@ const ComingSoonGames = ({ initGames = [], p }) => {
   useEffect(() => {
     if (!router.query.page) return;
     if (!parseFloat(router.query.page)) return router.replace(`/games/comingSoon/0`);
-  }, [router.query.page]);
+  }, [router.query.page, router]);
 
   const nextPage = () => {
     router.replace(`/games/comingSoon/${parseFloat(page) + 10}`);
@@ -84,6 +84,7 @@ const ComingSoonGames = ({ initGames = [], p }) => {
                     )}
                     {!game.cover && (
                       <Image
+                        alt="img"
                         src={`https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fe8%2F27%2Faf%2Fe827af6fc27e84d4fce3636179f27c99.png&f=1&nofb=1`}
                         width={500}
                         height={720}

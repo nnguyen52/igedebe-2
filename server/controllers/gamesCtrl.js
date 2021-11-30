@@ -16,6 +16,7 @@ const gamesCtrl = {
       const filtered = filterDuplicatesByName_forGames(response.data);
       res.json({ msg: 'ok', filtered });
     } catch (err) {
+      console.log(err);
       res.status(500).json({ err: err.message });
     }
   },
