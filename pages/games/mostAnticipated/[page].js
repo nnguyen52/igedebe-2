@@ -39,7 +39,7 @@ const MostAnticipatedGames = ({ initGames = [], p }) => {
   useEffect(() => {
     if (!router.query.page) return;
     if (!parseFloat(router.query.page)) return router.replace(`/games/mostAnticipated/0`);
-  }, [router.query.page, router]);
+  }, [router.query.page]);
   const nextPage = () => {
     router.replace(`/games/mostAnticipated/${parseFloat(page) + 10}`);
     setPage(parseFloat(page) + 10);

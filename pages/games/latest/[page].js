@@ -39,7 +39,7 @@ const LatestGames = ({ initGames = [], p }) => {
   useEffect(() => {
     if (!router.query.page) return;
     if (!parseFloat(router.query.page)) return router.replace(`/games/latest/0`);
-  }, [router.query.page, router]);
+  }, [router.query.page]);
 
   const nextPage = () => {
     router.replace(`/games/latest/${parseFloat(page) + 10}`);

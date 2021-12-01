@@ -42,7 +42,7 @@ const GameDetails = ({ gameWithDetails }) => {
         await getDetailedGame(router.query.id);
       }
     })();
-  }, [router.query.id, gameWithDetails[0], game]);
+  }, [router.query.id, gameWithDetails, game]);
   if (!game || !gameWithDetails)
     return (
       <>

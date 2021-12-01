@@ -38,7 +38,7 @@ const ComingSoonGames = ({ initGames = [], p }) => {
   useEffect(() => {
     if (!router.query.page) return;
     if (!parseFloat(router.query.page)) return router.replace(`/games/comingSoon/0`);
-  }, [router.query.page, router]);
+  }, [router.query.page]);
 
   const nextPage = () => {
     router.replace(`/games/comingSoon/${parseFloat(page) + 10}`);
