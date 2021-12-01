@@ -31,19 +31,22 @@ const GameDetails = ({ gameWithDetails }) => {
   const router = useRouter();
   useEffect(() => {
     (async () => {
-      if (gameWithDetails[0] && gameWithDetails[0] !== game)
+      // if incoming game !== currentGame => set new game
+      if (gameWithDetails[0] !== undefined && gameWithDetails[0] !== game)
         return setGame((prev) => gameWithDetails[0]);
-      if (gameWithDetails !== undefined) return setGame((prev) => gameWithDetails[0]);
+
+      // if (gameWithDetails !== undefined) return setGame((prev) => gameWithDetails[0]);
       const getDetailedGame = async (id) => {
         const res = await axios({ method: 'POST', url: `${apiURL}/api/getGamesDetails/${id}` });
+        console.log(res);
         setGame((prev) => res.data.data[0]);
       };
-      if (gameWithDetails === undefined) {
+      if (gameWithDetails === undefined || !game) {
         await getDetailedGame(router.query.id);
       }
     })();
   }, [router.query.id, gameWithDetails, game]);
-  if (!game || !gameWithDetails)
+  if (!game && !gameWithDetails)
     return (
       <>
         <LoadingPage autoplay={false} loop={false} />
@@ -177,31 +180,24 @@ const GameDetails = ({ gameWithDetails }) => {
           )}
         </div>
       </div>
-      {/* {(gameWithDetails[0].screenshots !== undefined && gameWithDetails[0]?.screenshots) ||
+      {(gameWithDetails[0].screenshots !== undefined && gameWithDetails[0]?.screenshots) ||
       (gameWithDetails[0].videos !== undefined && gameWithDetails[0]?.videos) ||
       (gameWithDetails[0].artworks !== undefined && gameWithDetails[0]?.artworks) ? (
         <Gallery
-          screenshots={gameWithDetails[0]?.screenshots}
-          videos={gameWithDetails[0]?.videos}
-          artworks={gameWithDetails[0]?.artworks}
+          screenshots={
+            gameWithDetails[0].screenshots !== undefined ? gameWithDetails[0].screenshots : null
+          }
+          videos={gameWithDetails[0].videos !== undefined ? gameWithDetails[0].videos : null}
+          artworks={gameWithDetails[0].artworks !== undefined ? gameWithDetails[0].artworks : null}
         />
       ) : (
         (game?.screenshots || game?.videos || game?.artworks) && (
           <Gallery
-            screenshots={game?.screenshots}
-            videos={game?.videos}
-            artworks={game?.artworks}
+            screenshots={game.screenshots !== undefined ? game.screenshots : null}
+            videos={game.videos !== undefined ? game.videos : null}
+            artworks={game.artworks !== undefined ? game.artworks : null}
           />
         )
-      )} */}
-      {(game.screenshots !== undefined ||
-        game.videos !== undefined ||
-        game.artworks !== undefined) && (
-        <Gallery
-          screenshots={game.screenshots !== undefined ? game.screenshots : null}
-          videos={game.videos !== undefined ? game.videos : null}
-          artworks={game.artworks !== undefined ? game.artworks : null}
-        />
       )}
       {/* {game && (
         <div>
