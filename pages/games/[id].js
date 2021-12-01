@@ -177,7 +177,7 @@ const GameDetails = ({ gameWithDetails }) => {
           )}
         </div>
       </div>
-      {(gameWithDetails[0].screenshots !== undefined && gameWithDetails[0]?.screenshots) ||
+      {/* {(gameWithDetails[0].screenshots !== undefined && gameWithDetails[0]?.screenshots) ||
       (gameWithDetails[0].videos !== undefined && gameWithDetails[0]?.videos) ||
       (gameWithDetails[0].artworks !== undefined && gameWithDetails[0]?.artworks) ? (
         <Gallery
@@ -193,6 +193,15 @@ const GameDetails = ({ gameWithDetails }) => {
             artworks={game?.artworks}
           />
         )
+      )} */}
+      {(game.screenshots !== undefined ||
+        game.videos !== undefined ||
+        game.artworks !== undefined) && (
+        <Gallery
+          screenshots={game.screenshots !== undefined ? game.screenshots : null}
+          videos={game.videos !== undefined ? game.videos : null}
+          artworks={game.artworks !== undefined ? game.artworks : null}
+        />
       )}
       {/* {game && (
         <div>

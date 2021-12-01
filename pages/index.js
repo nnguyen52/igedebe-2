@@ -44,15 +44,19 @@ export default function Home({ justReleasedGames, comingSoonGames, mostAnticipat
   );
 }
 export async function getStaticProps() {
-  const justReleasedGames = await axios.post(`${apiURL}/api/justReleasedGames`);
-  const comingSoonGames = await axios.post(`${apiURL}/api/comingSoonGames`);
-  const mostAnticipatedGames = await axios.post(`${apiURL}/api/mostAnticipatedGames`);
-  return {
-    props: {
-      justReleasedGames: justReleasedGames.data.data || [],
-      comingSoonGames: comingSoonGames.data.filtered || [],
-      mostAnticipatedGames: mostAnticipatedGames.data.filtered || [],
-    },
-    revalidate: (60 * 60 * 1000) / 2, //half day
-  };
+  try {
+    const justReleasedGames = await axios.post(`${apiURL}/api/justReleasedGames`);
+    const comingSoonGames = await axios.post(`${apiURL}/api/comingSoonGames`);
+    const mostAnticipatedGames = await axios.post(`${apiURL}/api/mostAnticipatedGames`);
+    return {
+      props: {
+        justReleasedGames: justReleasedGames.data.data || [],
+        comingSoonGames: comingSoonGames.data.filtered || [],
+        mostAnticipatedGames: mostAnticipatedGames.data.filtered || [],
+      },
+      revalidate: (60 * 60 * 1000) / 2, //half day
+    };
+  } catch (err) {
+    console.log('________', err, '___________');
+  }
 }
