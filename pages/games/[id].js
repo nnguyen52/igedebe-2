@@ -29,20 +29,24 @@ import blurImageURL from '../../assets/blur.png';
 const GameDetails = ({ gameWithDetails }) => {
   const [game, setGame] = useState(gameWithDetails[0]);
   const router = useRouter();
+  const getDetailedGame = async (id) => {
+    const res = await axios({ method: 'POST', url: `${apiURL}/api/getGamesDetails/${id}` });
+    setGame((prev) => res.data.data[0]);
+  };
   useEffect(() => {
     (async () => {
+      // if initalGame=== undefined && game === undefined
+      if (gameWithDetails === undefined && game === undefined) {
+        return await getDetailedGame(router.query.id);
+      }
       // if incoming game !== currentGame => set new game
-      if (gameWithDetails[0] !== undefined && gameWithDetails[0] !== game)
+      if (gameWithDetails !== undefined && gameWithDetails[0] !== game)
         return setGame((prev) => gameWithDetails[0]);
 
       // if (gameWithDetails !== undefined) return setGame((prev) => gameWithDetails[0]);
-      const getDetailedGame = async (id) => {
-        const res = await axios({ method: 'POST', url: `${apiURL}/api/getGamesDetails/${id}` });
-        console.log(res);
-        setGame((prev) => res.data.data[0]);
-      };
+
       if (gameWithDetails === undefined || !game) {
-        await getDetailedGame(router.query.id);
+        return await getDetailedGame(router.query.id);
       }
     })();
   }, [router.query.id, gameWithDetails, game]);
@@ -56,22 +60,38 @@ const GameDetails = ({ gameWithDetails }) => {
     <>
       <div className="gameDetail_container">
         <div className="cover_page">
-          {<Image src={generateImage(game)} alt="background cover" layout="fill" />}
+          {
+            <Image
+              src={generateImage(
+                game !== undefined
+                  ? game
+                  : gameWithDetails !== undefined
+                  ? gameWithDetails[0]
+                  : undefined
+              )}
+              alt="background cover"
+              layout="fill"
+            />
+          }
         </div>
         <div className="cover_page_content">
           <div className="cover_page_content_name_and_companies">
-            <h1 className="cover_page_content_name">{game.name}</h1>
-            {game.first_release_date !== undefined && (
+            <h1 className="cover_page_content_name">
+              {game !== undefined && game.name !== undefined ? game.name : 'TBD'}
+            </h1>
+            {game !== undefined && game.first_release_date !== undefined && (
               <h3 className="cover_page_content_release_date">
                 <small>{dateFormat(game.first_release_date)}</small>
               </h3>
             )}
             <h3 className="cover_page_content_involved_companies">
-              {game.involved_companies !== undefined && game.involved_companies.length > 0
-                ? game.involved_companies.filter((company) => company.developer).length > 0
-                  ? game.involved_companies.filter((company) => company.developer)[0].company.name
-                  : 'TBD'
-                : 'TBD'}
+              {game !== undefined &&
+                game.involved_companies !== undefined &&
+                (game.involved_companies.length > 0
+                  ? game.involved_companies.filter((company) => company.developer).length > 0
+                    ? game.involved_companies.filter((company) => company.developer)[0].company.name
+                    : 'TBD'
+                  : 'TBD')}
             </h3>
           </div>
           <div className="card mb-3 card_cover_details">
@@ -80,7 +100,7 @@ const GameDetails = ({ gameWithDetails }) => {
                 <Image
                   className="img-fluid rounded-start"
                   src={
-                    game.cover !== undefined
+                    game !== undefined && game.cover !== undefined
                       ? `https://images.igdb.com/igdb/image/upload/t_1080p/${game.cover.image_id}.jpg`
                       : no_cover_image
                   }
@@ -94,7 +114,7 @@ const GameDetails = ({ gameWithDetails }) => {
               </div>
               <div className="col-md-8">
                 <div className="card-body">
-                  {game.summary !== undefined && (
+                  {game !== undefined && game.summary !== undefined && (
                     <>
                       <p>
                         <span className="card_cover_details_big_letter">
@@ -108,58 +128,61 @@ const GameDetails = ({ gameWithDetails }) => {
               </div>
             </div>
           </div>
-
-          <div className="cover_page_content_total_rating">
-            <div className="progress_bar" style={{ padding: 0 }}>
-              <ProgressBar
-                progress={Math.floor(game.total_rating)}
-                radius={90}
-                strokeWidth={10}
-                trackStrokeWidth={15}
-                strokeColor={colorRating(game.total_rating)}
-              />
+          {game !== undefined && (
+            <div className="cover_page_content_total_rating">
+              <div className="progress_bar" style={{ padding: 0 }}>
+                <ProgressBar
+                  progress={Math.floor(game.total_rating)}
+                  radius={90}
+                  strokeWidth={10}
+                  trackStrokeWidth={15}
+                  strokeColor={colorRating(game.total_rating)}
+                />
+              </div>
+              <div className="rating">
+                {game.total_rating ? (
+                  <span style={{ color: colorRating(game.total_rating) }}>
+                    {Math.round(game.total_rating)}
+                  </span>
+                ) : (
+                  <span>NA</span>
+                )}
+                <ScoreRating
+                  className="score_rating"
+                  number={game.total_rating ? game.total_rating : undefined}
+                />
+              </div>
+              <div className="rating_src">Total rating</div>
             </div>
-            <div className="rating">
-              {game.total_rating ? (
-                <span style={{ color: colorRating(game.total_rating) }}>
-                  {Math.round(game.total_rating)}
-                </span>
-              ) : (
-                <span>NA</span>
-              )}
-              <ScoreRating
-                className="score_rating"
-                number={game.total_rating ? game.total_rating : undefined}
-              />
+          )}
+          {game !== undefined && (
+            <div className="cover_page_content_rating">
+              <div className="progress_bar">
+                <ProgressBar
+                  progress={game?.rating ? game.rating : 100}
+                  radius={75}
+                  strokeWidth={10}
+                  trackStrokeWidth={15}
+                  strokeColor={
+                    colorRating(game.rating) === 'No rating' ? 'grey' : colorRating(game.rating)
+                  }
+                />
+              </div>
+              <div className="rating">
+                {game.rating !== undefined ? (
+                  <span style={{ color: colorRating(game.rating) }}>{Math.round(game.rating)}</span>
+                ) : (
+                  <span>NA</span>
+                )}
+                <ScoreRating
+                  className="score_rating"
+                  number={game.rating ? game.rating : undefined}
+                />
+              </div>
+              <div className="rating_src">IGDB only</div>
             </div>
-            <div className="rating_src">Total rating</div>
-          </div>
-          <div className="cover_page_content_rating">
-            <div className="progress_bar">
-              <ProgressBar
-                progress={game?.rating ? game.rating : 100}
-                radius={75}
-                strokeWidth={10}
-                trackStrokeWidth={15}
-                strokeColor={
-                  colorRating(game.rating) === 'No rating' ? 'grey' : colorRating(game.rating)
-                }
-              />
-            </div>
-            <div className="rating">
-              {game.rating !== undefined ? (
-                <span style={{ color: colorRating(game.rating) }}>{Math.round(game.rating)}</span>
-              ) : (
-                <span>NA</span>
-              )}
-              <ScoreRating
-                className="score_rating"
-                number={game.rating ? game.rating : undefined}
-              />
-            </div>
-            <div className="rating_src">IGDB only</div>
-          </div>
-          {game.websites !== undefined && (
+          )}
+          {game !== undefined && game.websites !== undefined && (
             <div className="cover_page_content_websites">
               <h5>Social media</h5>
               <div
@@ -180,9 +203,11 @@ const GameDetails = ({ gameWithDetails }) => {
           )}
         </div>
       </div>
-      {(gameWithDetails[0].screenshots !== undefined && gameWithDetails[0]?.screenshots) ||
-      (gameWithDetails[0].videos !== undefined && gameWithDetails[0]?.videos) ||
-      (gameWithDetails[0].artworks !== undefined && gameWithDetails[0]?.artworks) ? (
+      {game !== undefined &&
+      gameWithDetails !== undefined &&
+      (gameWithDetails[0].screenshots !== undefined ||
+        gameWithDetails[0].videos !== undefined ||
+        gameWithDetails[0].artworks !== undefined) ? (
         <Gallery
           screenshots={
             gameWithDetails[0].screenshots !== undefined ? gameWithDetails[0].screenshots : null
@@ -191,14 +216,16 @@ const GameDetails = ({ gameWithDetails }) => {
           artworks={gameWithDetails[0].artworks !== undefined ? gameWithDetails[0].artworks : null}
         />
       ) : (
+        game !== undefined &&
         (game?.screenshots || game?.videos || game?.artworks) && (
           <Gallery
-            screenshots={game.screenshots !== undefined ? game.screenshots : null}
-            videos={game.videos !== undefined ? game.videos : null}
-            artworks={game.artworks !== undefined ? game.artworks : null}
+            screenshots={game?.screenshots !== undefined ? game?.screenshots : null}
+            videos={game?.videos !== undefined ? game?.videos : null}
+            artworks={game?.artworks !== undefined ? game?.artworks : null}
           />
         )
       )}
+
       {/* {game && (
         <div>
           <pre

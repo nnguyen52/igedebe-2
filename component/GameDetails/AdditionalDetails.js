@@ -8,6 +8,7 @@ const AdditionalDetails = ({ game }) => {
   // sm — screen width ≥ 576px
   // md — screen width ≥ 768px
   // lg — screen width ≥ 992px
+  if (game === undefined) return <> </>;
   return (
     <div className="additional_detail">
       <Row>
