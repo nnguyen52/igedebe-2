@@ -1,7 +1,7 @@
 # Production
 ### https://igedebe.vercel.app/
 
-### this project used NextJS for frontend, express and IGDB api.
+### this project used NextJS for frontend, express and IGDB api backend.
 #### NOTE-1: 
 this project use Nextjs, i styled CSS by myself so its quite broken (too lazy to set up CSS framework), i dont have time to improve this project so in production there will be crashes in some pags when contents are conditionally rendered (i missed some condition when rendering). 
 #### NOTE-2:
