@@ -121,7 +121,7 @@ const gamesCtrl = {
     try {
       const response = await apiConfig(
         '/games',
-        `fields name , cover.image_id, screenshots.image_id , videos.video_id , first_release_date , hypes; where hypes > 30; sort first_release_date desc; sort hypes desc; limit 15;offset : ${
+        `fields name, cover.image_id, screenshots.image_id , videos.video_id , first_release_date , hypes; where hypes > 30; sort first_release_date desc; sort hypes desc; limit 15;offset : ${
           req.params.offset ? req.params.offset : 0
         };`
       );
