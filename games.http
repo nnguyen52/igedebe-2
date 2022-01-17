@@ -84,7 +84,7 @@ fields name; where id = 18361;
 POST http://localhost:5000/api/getGamesDetails/184779
 
 ###
-GET https://serverigedebe2.herokuapp.com/api/getJustReleasedGamesPagination/1 
+POST https://igedebe2server.herokuapp.com/api/getGamesDetails/184779
 
 ###
 GET http://localhost:5000/api/getPress500games
