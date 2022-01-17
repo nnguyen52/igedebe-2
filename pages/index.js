@@ -57,6 +57,6 @@ export async function getStaticProps() {
       revalidate: (60 * 60 * 1000) / 2, //half day
     };
   } catch (err) {
-    console.log('________', err, '___________');
+    console.log('__ERROR_GETSTATIC_PROP_', err.message);
   }
 }

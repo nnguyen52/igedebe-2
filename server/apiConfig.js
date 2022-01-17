@@ -1,5 +1,23 @@
 const axios = require('axios');
-const apiConfig = async (endPoint, data) => {
+// workflow:
+// to fetch data from IDGB, it requires accessToken
+// try fetch data with newAccessToken
+//  => if !newAccessToken =>  fetch accessToken and assign newAccessToken=accessToken. then refetch data
+let newAccessToken = '';
+const fetchDataWithToken = async (endPoint, data) => {
+  try {
+    const accessToken = await axios({
+      method: 'POST',
+      url: `https://id.twitch.tv/oauth2/token?client_id=${process.env.GAME_CLIENTID}&client_secret=${process.env.GAME_CLIENT_SECRET}&grant_type=client_credentials`,
+    });
+    newAccessToken = accessToken.data.access_token;
+    const response = await apiConfig(endPoint, data, newAccessToken);
+    return response;
+  } catch (e) {
+    return console.log('error in fetchDataWithToken', e.message);
+  }
+};
+const apiConfig = async (endPoint, data, newToken) => {
   try {
     const res = await axios({
       method: 'post',
@@ -9,12 +27,15 @@ const apiConfig = async (endPoint, data) => {
         Accept: 'application/json',
         'Content-Type': 'text/plain',
         'Client-ID': `${process.env.GAME_CLIENTID}`,
-        Authorization: `Bearer ${process.env.GAME_ACCESSTOKEN}`,
+        Authorization: `Bearer ${newToken ? newToken.trim() : newAccessToken.trim()}`,
       },
     });
-    return { data: res.data };
+    return res.data;
   } catch (err) {
-    return { err: err.message };
+    // catch error as initially there accessToken is not available
+    // perform an API call to get accessToken then perform apiConfig 1 more time
+    const newData = await fetchDataWithToken(endPoint, data);
+    return newData;
   }
 };
 module.exports = apiConfig;

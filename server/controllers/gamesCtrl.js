@@ -13,7 +13,7 @@ const gamesCtrl = {
         '/games',
         `fields name, first_release_date , hypes; where hypes > 10 ; sort first_release_date desc ; limit 500;`
       );
-      const filtered = filterDuplicatesByName_forGames(response.data);
+      const filtered = filterDuplicatesByName_forGames(response);
       res.json({ msg: 'ok', filtered });
     } catch (err) {
       console.log(err);
@@ -24,13 +24,13 @@ const gamesCtrl = {
     try {
       const response = await apiConfig(
         '/games',
-        `fields id, name, first_release_date,  hypes, cover.image_id ; where hypes > 1 & first_release_date > ${Math.floor(
+        `fields id, name, first_release_date,  hypes, cover.image_id ; where hypes > 0 & first_release_date > ${Math.floor(
           Math.floor((Math.floor(new Date().getTime()) - 86400000 * 14) / 1000)
         )}  & first_release_date <= ${Math.floor(
           Math.floor(new Date().getTime()) / 1000
         )}; sort hypes desc; sort first_release_date desc; limit 200;`
       );
-      const data = filterDuplicatesByName_forGames(response.data);
+      const data = filterDuplicatesByName_forGames(response);
       if (!data) return res.json({ data: [] });
       res.json({ msg: 'ok', data });
     } catch (err) {
@@ -45,8 +45,8 @@ const gamesCtrl = {
           Math.floor(Date.now() / 1000)
         )};sort hypes desc; sort first_release_date asc; limit 50;`
       );
-      const names = response.data.map((o) => o.name);
-      const filtered = response.data.filter(({ name }, index) =>
+      const names = response.map((o) => o.name);
+      const filtered = response.filter(({ name }, index) =>
         name ? !names.includes(name, index + 1) : name
       );
       if (!filtered) return res.json({ msg: 'something is wrong here.', filtered: [] });
@@ -61,8 +61,8 @@ const gamesCtrl = {
         '/games',
         `fields name , cover.image_id, screenshots.image_id , videos.video_id , first_release_date , hypes; where hypes > 50; sort first_release_date desc; sort hypes desc; limit 50; `
       );
-      const names = response.data.map((o) => o.name);
-      const filtered = response.data.filter(({ name }, index) =>
+      const names = response.map((o) => o.name);
+      const filtered = response.filter(({ name }, index) =>
         name ? !names.includes(name, index + 1) : name
       );
       if (!filtered) return res.json({ msg: 'something is wrong here.', filtered: [] });
@@ -78,7 +78,7 @@ const gamesCtrl = {
         `fields player_perspectives.name, game_modes.name, release_dates.platform.name, age_ratings.content_descriptions.* , alternative_names.name , game_engines.name,  websites.url,name ,themes.name, genres.name, platforms.name, release_dates.date,  hypes, similar_games.name , similar_games.cover.image_id, websites.url , websites.category, involved_companies.company.name, involved_companies.developer,  involved_companies.publisher, involved_companies.supporting,  summary,storyline, videos.video_id,  rating, cover.image_id, first_release_date,artworks.image_id, dlcs, screenshots.image_id,similar_games.name, total_rating ; where id = ${req.params.id};`
       );
       if (!response) return res.json({ msg: 'not ok', data: [] });
-      res.json({ msg: 'ok', data: response.data });
+      res.json({ msg: 'ok', data: response });
     } catch (err) {
       res.status(500).json({ err: err.message });
     }
@@ -95,8 +95,8 @@ const gamesCtrl = {
           req.params.offset ? req.params.offset : 0
         };`
       );
-      if (!response.data) return res.json([]);
-      return res.json(response.data.splice(0, 10));
+      if (!response) return res.json([]);
+      return res.json(response.splice(0, 10));
     } catch (err) {
       return res.status(500).json({ err: err.message });
     }
@@ -111,8 +111,8 @@ const gamesCtrl = {
           req.params.offset ? req.params.offset : 0
         };`
       );
-      if (!response.data) return res.json([]);
-      return res.json(response.data.splice(0, 10));
+      if (!response) return res.json([]);
+      return res.json(response.splice(0, 10));
     } catch (err) {
       return res.status(500).json({ err: err.message });
     }
@@ -125,9 +125,9 @@ const gamesCtrl = {
           req.params.offset ? req.params.offset : 0
         };`
       );
-      if (!response.data) return res.json([]);
+      if (!response) return res.json([]);
 
-      return res.json(response.data.splice(0, 10));
+      return res.json(response.splice(0, 10));
     } catch (err) {
       return res.status(500).json({ err: err.message });
     }
@@ -138,7 +138,7 @@ const gamesCtrl = {
         '/games',
         `search "${req.params.query}"; fields name, first_release_date, cover.image_id;  limit 10;`
       );
-      return res.json(response.data);
+      return res.json(response);
     } catch (err) {
       return res.status(500).json({ err: err.message });
     }

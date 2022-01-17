@@ -16,7 +16,6 @@ const ComingSoonGames = ({ initGames = [], p }) => {
   const router = useRouter();
   const [data, setData] = useState(initGames);
   const [isSwr, setIsSWR] = useState(false);
-
   const masonryBreakpointColumns = {
     default: 4,
     1100: 3,
